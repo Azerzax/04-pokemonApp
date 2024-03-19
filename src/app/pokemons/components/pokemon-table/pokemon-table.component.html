@@ -1,0 +1,26 @@
+<div *ngIf="pokemons.length===0; else table" class="alert alert-warning text-center">
+  No hay paises que mostrar
+</div>
+
+<ng-template #table>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th> # </th>
+        <th> Nombre </th>
+        <th> Tipo </th>
+        <th> Altura </th>
+        <th> Foto </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pokemon of pokemons; let i = index">
+        <td>{{i+1}}</td>
+        <td>{{pokemon.name}}</td>
+        <td><p *ngFor="let type of pokemon.types">{{type.type.name}}</p></td>
+        <td>{{pokemon.height}}</td>
+        <td><img [src]="pokemon.sprites.other?.dream_world?.front_default" [alt]="pokemon.name"></td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>

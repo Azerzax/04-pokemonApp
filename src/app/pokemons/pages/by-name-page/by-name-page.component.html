@@ -1,0 +1,14 @@
+<h2>Por nombre</h2>
+<hr>
+<div class="row">
+  <div class="col">
+    <shared-search-box (searchBoxEmitter)="searchByName($event)" placeholder="buscar por nombre"></shared-search-box>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <hr>
+    <pokemons-table [pokemons]="pokemons"></pokemons-table>
+  </div>
+</div>
