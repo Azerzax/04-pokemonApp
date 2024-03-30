@@ -1,1 +1,10 @@
-<p>pokemon-page works!</p>
+
+<div *ngIf="pokemon; else cargando">
+  <h2>Pokemon: <strong> {{pokemon.name}}</strong> </h2>
+</div>
+
+<ng-template #cargando>
+  <div class="alert alert-info text-center">
+    <h4>No hay pokemon que mostrar</h4>
+  </div>
+</ng-template>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { PokemonsService } from '../../services/pokemons.service';
 import { Pokemon } from '../../interfaces/pokemon';
+import { filter, forkJoin, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-by-type-page',
@@ -14,6 +15,7 @@ export class ByTypePageComponent {
 
   public pokemons: Pokemon[]=[];
 
+  /*ESTO ES UN SERVICE ANIDADO, UN SUBSCRIBE DENTRO DE OTRO SUBSCRIBE, ESTA BIEN PERO SE PUEDE SIMPLIFICAR
   searchByType(tipo:string){
     this.pokemons=[];
     this.pokemonsService.searchType(tipo)
@@ -27,6 +29,24 @@ export class ByTypePageComponent {
         });;
       }
     })
+  }
+  SE SIMPLIFICA CON SWITCHMAP DE LA SIGUIENTE MANERA: */
+
+  searchByType(tipo: string) {
+    this.pokemons = [];
+    this.pokemonsService.searchType(tipo)
+      .pipe(
+        filter(response => !!response),//aqui se mira que el response no sea undefined, porque sino en la siguiente linea el switchmap no podria desglosarlo y buscar la variable "pokemon"
+        switchMap(({pokemon}) => {
+          const requests = pokemon.map(poke => this.pokemonsService.searchName(poke.pokemon.name));
+          return forkJoin(requests);
+        })
+      )
+      .subscribe(response2 => {
+          response2.forEach(element => {
+            this.pokemons.push(element);
+          });
+      });
   }
 
 }
